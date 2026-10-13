@@ -174,3 +174,21 @@ export async function getUipWaysToGivePageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP CarePacksPage Global data from Payload CMS
+ */
+export async function getUipCarePacksPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-carepacks-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Care Packs Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipCarePacksPageData error:', err);
+    return null;
+  }
+}

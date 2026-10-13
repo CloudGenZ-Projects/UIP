@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { apiService } from '../../api/apiService'; // Adjust path if needed
 
-export default function CarePackFormCTA() {
+export default function CarePackFormCTA({ data }) {
+  const formBadge = data?.form_badge || "Free for LGBTQ+ Newcomers";
+  const formTitle = data?.form_title || "Apply for Your Welcome Care Pack";
+  const formDesc = data?.form_description || "No cost. Simply complete our 2‑minute form and we'll ship it to your Canadian address within 5 business days.";
   // Form State
   const [formData, setFormData] = useState({
     firstName: '',

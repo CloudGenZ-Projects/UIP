@@ -15,7 +15,10 @@ const FAQS = [
   }
 ];
 
-export default function CarePackFAQ() {
+export default function CarePackFAQ({ data }) {
+  const title = data?.faq_title || "Frequently Asked Questions";
+  const description = data?.faq_description || "Everything you need to know about our Welcome Care Packs.";
+  const faqsList = (data?.faqs && data.faqs.length > 0) ? data.faqs : FAQS;
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
@@ -31,7 +34,7 @@ export default function CarePackFAQ() {
         </div>
 
         <div className="space-y-4">
-          {FAQS.map((faq, index) => (
+          {faqsList.map((faq, index) => (
             <div 
               key={index} 
               className={`bg-white rounded-2xl overflow-hidden transition-all duration-300 border ${openIndex === index ? 'border-pride-purple/30 shadow-md' : 'border-gray-100 shadow-sm'}`}

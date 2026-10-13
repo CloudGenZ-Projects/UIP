@@ -9,6 +9,7 @@ import {
   getUipStoriesPageData,
   getUipPartnersPageData,
   getUipWaysToGivePageData,
+  getUipCarePacksPageData,
 } from '../services/api';
 
 /**
@@ -45,7 +46,9 @@ export function isValidCmsData(d) {
     d.intro_title ||
     d.support_cta_title ||
     d.partner_form_title ||
-    d.carepack_title
+    d.carepack_title ||
+    d.contents_title ||
+    d.faq_title
   );
 }
 
@@ -281,4 +284,12 @@ export const useUipWaysToGivePageLive = createUipLiveHook(
   'uip-waystogive-page-data',
   getUipWaysToGivePageData,
   'uip-waystogive-page'
+);
+
+// Export individual hook for UIP Care Packs Page
+export const useUipCarePacksPageLive = createUipLiveHook(
+  'uip-carepacks-page',
+  'uip-carepacks-page-data',
+  getUipCarePacksPageData,
+  'uip-carepacks-page'
 );
