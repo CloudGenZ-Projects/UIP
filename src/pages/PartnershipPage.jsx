@@ -8,10 +8,12 @@ import VolunteerCTA from '../components/volunteer/VolunteerCTA';
 import PartnershipHero from '../components/volunteer/PartnershipHero';
 import VolunteerRoles from '../components/volunteer/VolunteerRoles';
 import TrainingSupport from '../components/volunteer/TrainingSupport';
+import { useUipWaysToGivePageLive } from '../hooks/usePayloadLive';
 
 
 
 export default function PartnershipPage() {
+    const { data } = useUipWaysToGivePageLive();
     const location = useLocation(); // <-- Add this
 
     // Add this useEffect block
@@ -39,7 +41,7 @@ export default function PartnershipPage() {
             <Navbar />
 
             <main id="partnerships" className="relative">
-                <PartnershipHero />
+                <PartnershipHero data={data} />
                 <TrainingSupport />
                 {/* Ensure WaysToGiveOptions or the components with the IDs are rendered here */}
             </main>

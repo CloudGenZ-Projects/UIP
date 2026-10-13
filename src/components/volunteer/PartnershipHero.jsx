@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiService } from '../../api/apiService';
 
-export default function WaysToGiveOptions() {
+export default function WaysToGiveOptions({ data }) {
+  const donateTitle = data?.donate_title || "Donate";
+  const donateDesc = data?.donate_description || "Your support helps create spaces where people feel seen, supported, and connected.";
+  const carepackTitle = data?.carepack_title || "Sponsor a Care Pack";
+  const carepackDesc = data?.carepack_description || "Many LGBTQ+ newcomers and asylum seekers arrive with very little. Our Care Pack program provides essential items to help them get started with dignity and comfort.";
+  const partnerTitle = data?.partner_form_title || "Partner With Us";
+  const partnerDesc = data?.partner_form_desc || "We welcome partnerships with organizations, businesses, student groups, and community initiatives.";
+  const shareTitle = data?.share_work_title || "Share Our Work";
+  const shareDesc = data?.share_work_desc || "Not everyone can donate, and that is okay. Sharing our work is one of the most powerful ways to help. Follow us, invite others to our events, and help us spread the word.";
+  const shareQuote = data?.share_work_quote || "Awareness creates connection. Connection creates belonging.";
   const [formData, setFormData] = useState({
     orgName: '',
     contactName: '',
@@ -96,7 +105,7 @@ export default function WaysToGiveOptions() {
         >
           <div className="flex flex-col lg:flex-row gap-12 items-center">
             <div className="flex-1 w-full">
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Donate</h2>
+              {donateTitle && <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">{donateTitle}</h2>}
               <p className="text-xl font-bold text-[#A855F7] mb-6">
                 Your support helps create spaces where people feel seen, supported, and connected.
               </p>
@@ -329,7 +338,7 @@ export default function WaysToGiveOptions() {
           className="lg:col-span-2 bg-slate-100 rounded-[2.5rem] p-8 md:p-14 shadow-sm border border-slate-200 flex flex-col md:flex-row gap-10 items-center text-center md:text-left"
         >
           <div className="flex-1">
-            <h2 className="text-3xl font-black text-slate-900 mb-4">Share Our Work</h2>
+            {shareTitle && <h2 className="text-3xl font-black text-slate-900 mb-4">{shareTitle}</h2>}
             <p className="text-slate-600 text-lg leading-relaxed">
               Not everyone can donate, and that is okay. Sharing our work is one of the most powerful ways to help. Follow us, invite others to our events, and help us spread the word.
             </p>

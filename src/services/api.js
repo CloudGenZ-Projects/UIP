@@ -156,3 +156,21 @@ export async function getUipPartnersPageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP WaysToGivePage Global data from Payload CMS
+ */
+export async function getUipWaysToGivePageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-waystogive-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Ways To Give Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipWaysToGivePageData error:', err);
+    return null;
+  }
+}
