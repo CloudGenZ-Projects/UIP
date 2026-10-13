@@ -120,3 +120,21 @@ export async function getUipAboutPageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP StoriesPage Global data from Payload CMS
+ */
+export async function getUipStoriesPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-stories-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Stories Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipStoriesPageData error:', err);
+    return null;
+  }
+}
