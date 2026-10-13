@@ -62,7 +62,21 @@ export default function VolunteerDetails() {
 
     setIsSubmitting(true);
     try {
-      await apiService.submitVolunteer(formData);
+
+      const payload = {
+        ...formData,
+        formId: 'uip-contact'
+      };
+
+      await apiService.submitVolunteer(payload);
+
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
       
       // Show Custom Success Popup
       setPopup({

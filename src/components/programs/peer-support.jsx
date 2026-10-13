@@ -40,11 +40,21 @@ export default function PeerSupportForm() {
       identity: identityArray.join(', '), // DB wants a string
       age_group: formData.get('age_group'),
       goals: goalsArray.join(', '), // DB wants a string
-      photo_consent: formData.get('photo_consent')
+      photo_consent: formData.get('photo_consent'),
+      
+      
+      formId: 'uip-contact'
     };
 
     try {
       await apiService.submitPeerSupport(payload);
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
       setShowPopup(true); // Trigger Popup
       e.target.reset();
     } catch (error) {

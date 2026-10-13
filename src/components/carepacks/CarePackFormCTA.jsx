@@ -33,7 +33,13 @@ export default function CarePackFormCTA() {
     setStatus({ loading: true, success: false, error: '' });
 
     try {
-      await apiService.submitCarePack(formData);
+      
+      const payload = {
+        ...formData,
+        formId: 'uip-contact'
+      };
+
+      await apiService.submitCarePack(payload);
       
       setStatus({ loading: false, success: true, error: '' });
       

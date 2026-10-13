@@ -24,7 +24,7 @@ export default function CulturalForm() {
       pronouns: formData.get('pronouns'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      interests: interestsArray.join(', '), 
+      interests: interestsArray.join(', '),
       age_group: formData.get('age_group'),
       country: formData.get('country'),
       background: formData.get('background'),
@@ -34,12 +34,20 @@ export default function CulturalForm() {
       emergency_phone: formData.get('emergency_phone'),
       volunteering: formData.get('volunteering') === 'on',
       photo_consent: formData.get('photo_consent'),
-      comments: formData.get('comments')
+      comments: formData.get('comments'),
+      formId: 'uip-contact'
     };
 
     try {
       await apiService.submitCultural(payload);
-      setShowPopup(true); 
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      setShowPopup(true);
       e.target.reset();
     } catch (error) {
       console.error(error);
@@ -51,16 +59,16 @@ export default function CulturalForm() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans overflow-x-hidden m-0 p-0 flex flex-col">
-      
+
       {/* --- HERO SECTION --- */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-[120px] pb-[160px] px-6">
         <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#1e1b4b] via-[#4c1d95] to-[#3b82f6]">
           <div className="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_20%_50%,rgba(255,107,107,0.3)_0%,transparent_60%),radial-gradient(ellipse_at_80%_20%,rgba(59,130,246,0.3)_0%,transparent_60%)]"></div>
         </div>
-        
+
         <div className="relative z-10 text-center max-w-[1000px]">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }} 
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-white text-4xl md:text-6xl font-black leading-tight mb-6"
           >
@@ -72,22 +80,22 @@ export default function CulturalForm() {
         </div>
 
         <svg className="absolute bottom-[-2px] left-0 w-full h-[100px] md:h-[150px] z-[3]" viewBox="0 0 1440 180" preserveAspectRatio="none">
-          <path d="M0,80 C240,160 480,0 720,80 C960,160 1200,0 1440,80 L1440,180 L0,180 Z" fill="#f8fafc"/>
+          <path d="M0,80 C240,160 480,0 720,80 C960,160 1200,0 1440,80 L1440,180 L0,180 Z" fill="#f8fafc" />
         </svg>
       </section>
 
       {/* --- MAIN CONTENT --- */}
       <div className="max-w-[1200px] mx-auto px-6 -mt-24 pb-24 relative z-10 w-full">
         <div className="grid lg:grid-cols-3 gap-12">
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             style={cardBorderStyle}
             className="lg:col-span-2 bg-white rounded-[3rem] p-8 md:p-14 border-2 border-transparent shadow-2xl"
           >
             <form className="space-y-16" onSubmit={handleSubmit}>
-              
+
               {/* Section 1: Personal Info */}
               <section className="space-y-8">
                 <div className="flex items-center gap-5">
@@ -125,18 +133,18 @@ export default function CulturalForm() {
                   <div className="grid sm:grid-cols-2 gap-3">
                     {[
                       '🍿 Queer Afro Movie Night',
-                      '🌈 Pride Month Celebrations', 
-                      '🌍 Heritage & Cultural Feasts', 
-                      '🎉 Holiday Get-Togethers', 
-                      '🏆 Community Milestones', 
-                      '🍲 Potlucks & Food Festivals', 
-                      '🎵 Music & Dance Jams', 
-                      '🎨 Art & Creativity Showcases', 
-                      '⚽ Sports & Park Days', 
+                      '🌈 Pride Month Celebrations',
+                      '🌍 Heritage & Cultural Feasts',
+                      '🎉 Holiday Get-Togethers',
+                      '🏆 Community Milestones',
+                      '🍲 Potlucks & Food Festivals',
+                      '🎵 Music & Dance Jams',
+                      '🎨 Art & Creativity Showcases',
+                      '⚽ Sports & Park Days',
                       '📖 Storytelling & Poetry Nights'
                     ].map(event => (
                       <label key={event} className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-all group">
-                        <input type="checkbox" name="interests_checkbox" value={event} className="w-5 h-5 accent-[#A855F7] rounded" /> 
+                        <input type="checkbox" name="interests_checkbox" value={event} className="w-5 h-5 accent-[#A855F7] rounded" />
                         <span className="text-sm font-bold text-slate-600 group-hover:text-slate-900">{event}</span>
                       </label>
                     ))}
@@ -218,7 +226,7 @@ export default function CulturalForm() {
                   <span className="w-12 h-12 rounded-2xl bg-[#A855F7]/10 text-[#A855F7] flex items-center justify-center font-black text-xl shadow-sm">6</span>
                   <h2 className="text-2xl font-black text-slate-900 italic">Final Touches</h2>
                 </div>
-                
+
                 <div className="space-y-6">
                   <div className="space-y-4">
                     <label className="text-xs font-black uppercase tracking-widest text-slate-400 block ml-2">Are you okay with being in event photos?</label>
@@ -246,7 +254,7 @@ export default function CulturalForm() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               style={cardBorderStyle}
@@ -254,28 +262,28 @@ export default function CulturalForm() {
             >
               <h3 className="text-2xl font-black text-slate-900 mb-2 italic">Coming Up!</h3>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-8 border-b border-slate-50 pb-4">Mark your calendar</p>
-              
+
               <div className="space-y-6">
                 {/* NEW MOVIE NIGHT EVENT */}
-                <EventCard 
-                  title="Queer Afro Movie Night 🍿" 
-                  desc="A monthly gathering celebrating beautiful queer African stories through film, conversation, and community." 
-                  loc="Every Last Saturday (First event: Apr 25)" 
+                <EventCard
+                  title="Queer Afro Movie Night 🍿"
+                  desc="A monthly gathering celebrating beautiful queer African stories through film, conversation, and community."
+                  loc="Every Last Saturday (First event: Apr 25)"
                 />
-                <EventCard 
-                  title="Pride Month Kickoff 🌈" 
-                  desc="A vibrant evening with delicious food, great music, and local community performances." 
-                  loc="Community Centre" 
+                <EventCard
+                  title="Pride Month Kickoff 🌈"
+                  desc="A vibrant evening with delicious food, great music, and local community performances."
+                  loc="Community Centre"
                 />
-                <EventCard 
-                  title="Summer Harvest Potluck 🍲" 
-                  desc="Share a dish from your culture, play games, and enjoy a day outdoors together." 
-                  loc="Riverside Park" 
+                <EventCard
+                  title="Summer Harvest Potluck 🍲"
+                  desc="Share a dish from your culture, play games, and enjoy a day outdoors together."
+                  loc="Riverside Park"
                 />
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="bg-[#1e1b4b] rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden"
@@ -296,16 +304,16 @@ export default function CulturalForm() {
       {/* SUCCESS POPUP */}
       <AnimatePresence>
         {showPopup && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4"
           >
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 20 }} 
-              animate={{ scale: 1, opacity: 1, y: 0 }} 
-              exit={{ scale: 0.9, opacity: 0, y: 20 }} 
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="bg-white rounded-[2rem] p-8 md:p-10 max-w-sm w-full text-center shadow-2xl border border-slate-100"
             >
               <div className="w-20 h-20 bg-gradient-to-br from-[#FF6B6B] to-[#A855F7] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
@@ -315,7 +323,7 @@ export default function CulturalForm() {
               <p className="text-slate-500 mb-8 font-medium leading-relaxed">
                 We're thrilled to have you join our cultural gatherings. Keep an eye on your email for the next invite. Can't wait to see you there! 🌈
               </p>
-              <button 
+              <button
                 onClick={() => setShowPopup(false)}
                 className="w-full py-4 bg-slate-900 text-white font-black rounded-2xl shadow-md hover:bg-slate-800 hover:shadow-xl transition-all"
               >

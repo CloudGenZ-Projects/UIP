@@ -77,8 +77,22 @@ export default function ContactMain() {
     setStatus({ loading: true, success: false, error: '' });
 
     try {
-      // Calling the API Service
-      await apiService.submitContact(formData);
+      
+      const payload = {
+        ...formData,
+        formId: 'uip-contact' 
+      };
+
+      // Calling the API Service with updated payload
+      await apiService.submitContact(payload);
+
+       await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
       // On Success
       setStatus({ loading: false, success: true, error: '' });

@@ -37,7 +37,13 @@ export default function SupportFormCTA() {
 
     setIsSubmitting(true);
     try {
-      await apiService.submitSupportRequest(formData);
+     
+      const payload = {
+        ...formData,
+        formId: 'uip-contact'
+      };
+
+      await apiService.submitSupportRequest(payload);
       
       // Show Custom Success Popup
       setPopup({

@@ -42,8 +42,22 @@ export default function WaysToGiveOptions() {
     setSubmitMessage({ type: '', text: '' });
 
     try {
-      // Calling the backend using your apiService
-      await apiService.submitPartnership(formData);
+      
+      const payload = {
+        ...formData,
+        formId: 'uip-contact'
+      };
+
+      // Calling the backend using your apiService with the updated payload
+      await apiService.submitPartnership(payload);
+
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
       setSubmitMessage({
         type: 'success',

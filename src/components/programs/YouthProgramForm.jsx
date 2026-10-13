@@ -30,11 +30,20 @@ export default function YouthProgramForm() {
       access_needs: formData.get('access_needs'),
       allergies: formData.get('allergies'),
       emergency_contact: formData.get('emergency_contact'),
-      photo_consent: formData.get('photo_consent')
+      photo_consent: formData.get('photo_consent'),
+      
+      formId: 'uip-contact'
     };
 
     try {
       await apiService.submitYouthProgram(payload);
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
       setShowPopup(true);
       e.target.reset();
     } catch (error) {

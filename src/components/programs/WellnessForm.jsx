@@ -17,10 +17,22 @@ export default function WellnessForm() {
     setLoading(true);
 
     const formData = new FormData(e.target);
-    const payload = Object.fromEntries(formData.entries());
+    
+   
+    const payload = {
+      ...Object.fromEntries(formData.entries()),
+      formId: 'uip-contact'
+    };
 
     try {
       await apiService.submitWellness(payload);
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
       setShowPopup(true); // Trigger Popup
       e.target.reset();
     } catch (error) {
