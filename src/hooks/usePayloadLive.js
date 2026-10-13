@@ -10,6 +10,7 @@ import {
   getUipPartnersPageData,
   getUipWaysToGivePageData,
   getUipCarePacksPageData,
+  getUipInvolvedPageData,
 } from '../services/api';
 
 /**
@@ -292,4 +293,12 @@ export const useUipCarePacksPageLive = createUipLiveHook(
   'uip-carepacks-page-data',
   getUipCarePacksPageData,
   'uip-carepacks-page'
+);
+
+// Export individual hook for UIP Involved Page
+export const useUipInvolvedPageLive = createUipLiveHook(
+  'uip-involved-page',
+  'uip-involved-page-data',
+  getUipInvolvedPageData,
+  'uip-involved-page'
 );

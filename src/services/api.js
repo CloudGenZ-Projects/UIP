@@ -192,3 +192,21 @@ export async function getUipCarePacksPageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP InvolvedPage Global data from Payload CMS
+ */
+export async function getUipInvolvedPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-involved-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Involved Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipInvolvedPageData error:', err);
+    return null;
+  }
+}
