@@ -1,39 +1,15 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
+import { getMediaUrl } from '../services/api';
 
-import img1 from '../assets/gallerySlid/DSC00239.jpg';
-import img2 from '../assets/gallerySlid/DSC00253.jpg';
-import img3 from '../assets/gallerySlid/DSC00254.jpg';
-import img4 from '../assets/gallerySlid/DSC00270.jpg';
-import img5 from '../assets/gallerySlid/DSC00271.jpg';
-import img6 from '../assets/gallerySlid/DSC00282.jpg';
-import img7 from '../assets/gallerySlid/DSC00283.jpg';
-import img8 from '../assets/gallerySlid/DSC00293.jpg';
-import img9 from '../assets/gallerySlid/DSC00294.jpg';
-import img10 from '../assets/gallerySlid/DSC00303.jpg';
-import img11 from '../assets/gallerySlid/DSC00304.jpg';
-import img12 from '../assets/gallerySlid/_DSC00001.jpg';
-import img13 from '../assets/gallerySlid/_DSC00002.jpg';
-import img14 from '../assets/gallerySlid/_DSC00003.jpg';
-import img15 from '../assets/gallerySlid/_DSC00005.jpg';
-import img16 from '../assets/gallerySlid/_DSC00289.jpg';
-import img17 from '../assets/gallerySlid/DSC00001.jpg';
-import img18 from '../assets/gallerySlid/DSC00157.jpg';
-import img19 from '../assets/gallerySlid/DSC00158.jpg';
-import img20 from '../assets/gallerySlid/DSC00160.jpg';
-import img21 from '../assets/gallerySlid/DSC00161.jpg';
-import img22 from '../assets/gallerySlid/DSC00238.jpg';
-
-const GALLERY_IMAGES = [
-  img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, 
-  img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, 
-  img21, img22
-];
-
-
-
-export default function CommunityGallery() {
+export default function CommunityGallery({ images }) {
   const scrollRef = useRef(null);
+
+  const activeGalleryImages = images && images.length > 0
+    ? images.map((item) => getMediaUrl(item?.image || item)).filter(Boolean)
+    : [];
+
+  if (!activeGalleryImages || activeGalleryImages.length === 0) return null;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -46,9 +22,7 @@ export default function CommunityGallery() {
   };
 
   return (
-    // Removed bg-[#f8fafc] and reduced padding so it fits in the Hero
     <div className="py-8 w-full overflow-hidden relative">
-      
       <style>{`
         .hide-scroll {
           -ms-overflow-style: none;
@@ -59,58 +33,46 @@ export default function CommunityGallery() {
         }
       `}</style>
 
-      <div className="relative w-full group">
-        
-        {/* Floating Left Button */}
-        <button 
-          onClick={() => scroll('left')}
-          className="absolute left-4 md:left-8 top-[40%] md:top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/90 backdrop-blur-sm border border-slate-100 flex items-center justify-center shadow-2xl hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 text-slate-800 focus:outline-none focus:ring-4 focus:ring-[#A855F7]/30"
-          aria-label="Scroll left"
-        >
-          <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+      {/* Navigation Buttons */}
+      <button 
+        onClick={() => scroll('left')}
+        aria-label="Scroll Left"
+        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/80 hover:bg-white text-slate-800 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all hover:scale-105 active:scale-95 border border-slate-100"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
 
-        {/* Floating Right Button */}
-        <button 
-          onClick={() => scroll('right')}
-          className="absolute right-4 md:right-8 top-[40%] md:top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/90 backdrop-blur-sm border border-slate-100 flex items-center justify-center shadow-2xl hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 text-slate-800 focus:outline-none focus:ring-4 focus:ring-[#A855F7]/30"
-          aria-label="Scroll right"
-        >
-          <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+      <button 
+        onClick={() => scroll('right')}
+        aria-label="Scroll Right"
+        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/80 hover:bg-white text-slate-800 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all hover:scale-105 active:scale-95 border border-slate-100"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
 
-        {/* The Scrolling Track */}
-        <div 
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scroll pb-12 pt-4 pr-12 scroll-smooth"
-          // This keeps the first image aligned nicely with standard max-width, while letting the track extend off-screen
-          style={{ paddingLeft: 'max(1.5rem, calc((100vw - 1000px) / 2))' }}
-        >
-          {GALLERY_IMAGES.map((src, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: i * 0.05, duration: 0.5, ease: "easeOut" }}
-              className="relative shrink-0 snap-center group w-[80vw] sm:w-[50vw] md:w-[320px] lg:w-[380px] aspect-[4/5] rounded-[3rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20 cursor-grab active:cursor-grabbing"
-            >
-              <img 
-                src={src} 
-                alt={`Gallery Moment ${i + 1}`} 
-                loading="lazy"
-                draggable="false"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-[3rem] transition-colors duration-300 pointer-events-none z-10"></div>
-            </motion.div>
-          ))}
-        </div>
+      {/* Sliding Images Track */}
+      <div 
+        ref={scrollRef}
+        className="flex gap-6 overflow-x-auto hide-scroll px-6 py-4 scroll-smooth snap-x snap-mandatory"
+      >
+        {activeGalleryImages.map((imgSrc, index) => (
+          <motion.div
+            key={index}
+            className="flex-shrink-0 w-[280px] sm:w-[340px] md:w-[380px] aspect-[4/3] rounded-3xl overflow-hidden shadow-md group relative snap-start border border-slate-100"
+          >
+            <img 
+              src={imgSrc} 
+              alt={`Gallery ${index + 1}`} 
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+          </motion.div>
+        ))}
       </div>
     </div>
   );
