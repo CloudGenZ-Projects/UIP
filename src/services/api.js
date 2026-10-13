@@ -246,3 +246,21 @@ export async function getUipDonatePageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP ContactPage Global data from Payload CMS
+ */
+export async function getUipContactPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-contact-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Contact Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipContactPageData error:', err);
+    return null;
+  }
+}

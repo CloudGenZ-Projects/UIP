@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function ContactHero() {
+export default function ContactHero({ data }) {
+  if (!data) return null;
+
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-[120px] pb-[160px] px-6">
       {/* Background Gradient */}
@@ -10,30 +12,36 @@ export default function ContactHero() {
       </div>
       
       <div className="relative z-10 text-center max-w-[900px]">
-        <motion.span 
-          initial={{ opacity: 0, y: 20 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          className="inline-block py-2 px-5 bg-white/12 border border-white/20 rounded-full text-white/90 text-sm font-medium backdrop-blur-md mb-6"
-        >
-          Get in Touch
-        </motion.span>
+        {data.heroBadge && (
+          <motion.span 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            className="inline-block py-2 px-5 bg-white/12 border border-white/20 rounded-full text-white/90 text-sm font-medium backdrop-blur-md mb-6"
+          >
+            {data.heroBadge}
+          </motion.span>
+        )}
         <motion.h1 
           initial={{ opacity: 0, y: 20 }} 
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="text-white text-5xl md:text-[4.5rem] font-extrabold leading-[1.1] mb-8"
         >
-          We'd Love to <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]">Hear From You</span>
+          {data.heroTitleLine1} <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]">
+            {data.heroTitleGradient}
+          </span>
         </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }} 
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-white/80 text-lg md:text-[1.25rem] leading-[1.8] max-w-[700px] mx-auto"
-        >
-          Reach out with questions, ideas, or to learn more about joining our community. We're here to support you on your journey.
-        </motion.p>
+        {data.heroDescription && (
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-white/80 text-lg md:text-[1.25rem] leading-[1.8] max-w-[700px] mx-auto"
+          >
+            {data.heroDescription}
+          </motion.p>
+        )}
       </div>
 
       {/* Signature Wave Divider */}

@@ -13,6 +13,7 @@ import {
   getUipInvolvedPageData,
   getUipProgramsPageData,
   getUipDonatePageData,
+  getUipContactPageData,
 } from '../services/api';
 
 /**
@@ -319,4 +320,12 @@ export const useUipDonatePageLive = createUipLiveHook(
   'uip-donate-page-data',
   getUipDonatePageData,
   'uip-donate-page'
+);
+
+// Export individual hook for UIP Contact Page
+export const useUipContactPageLive = createUipLiveHook(
+  'uip-contact-page',
+  'uip-contact-page-data',
+  getUipContactPageData,
+  'uip-contact-page'
 );
