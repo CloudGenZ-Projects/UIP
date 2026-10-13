@@ -228,3 +228,21 @@ export async function getUipProgramsPageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP DonatePage Global data from Payload CMS
+ */
+export async function getUipDonatePageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-donate-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Donate Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipDonatePageData error:', err);
+    return null;
+  }
+}
