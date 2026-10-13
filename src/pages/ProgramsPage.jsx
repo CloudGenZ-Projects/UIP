@@ -1,39 +1,61 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProgramsHero from '../components/programs/ProgramsHero';
 import CorePrograms from '../components/programs/CorePrograms';
 import ProgramImpact from '../components/programs/ProgramImpact';
 import JourneySteps from '../components/programs/JourneySteps';
 import ProgramsCTA from '../components/programs/ProgramsCTA';
-import CommunityGallery from '../components/CommunityGallery';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { getUipProgramsPageData } from '../services/api';
+import { useUipProgramsPageLive } from '../hooks/usePayloadLive';
 
 export default function ProgramsPage() {
+  const [initialData, setInitialData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getUipProgramsPageData()
+      .then((data) => {
+        if (data) setInitialData(data);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const liveData = useUipProgramsPageLive(initialData);
+  const data = liveData || initialData;
+
+  if (loading && !data) {
+    return (
+      <div className="min-h-screen bg-[#0f0a2e] flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white font-sans text-pride-navy">
-      
-      {/* 1. Navbar Linked at the Top */}
       <Navbar />
       
-      {/* 2. Main Content wrapped in a tag with id="programs" 
-             This makes the navbar link href="#programs" work perfectly */}
       <main id="programs" className="relative">
-         {/* <CommunityGallery /> */}
-        <ProgramsHero />
-        <CorePrograms />
-       
-        <ProgramImpact />
-        <JourneySteps />
+        <ProgramsHero data={data} />
+        <CorePrograms programs={data?.programsList} />
+        <ProgramImpact
+          heading={data?.impactHeading}
+          subtitle={data?.impactSubtitle}
+          stats={data?.impactStats}
+        />
+        <JourneySteps
+          heading={data?.journeyHeading}
+          subtitle={data?.journeySubtitle}
+          steps={data?.journeySteps}
+        />
         
-        {/* Added id="donate" here so the Donate button from Navbar scrolls to CTA */}
         <div id="donate">
-          <ProgramsCTA />
+          <ProgramsCTA data={data} />
         </div>
       </main>
 
-      {/* 3. Footer at the Bottom */}
       <Footer />
-      
     </div>
   );
 }

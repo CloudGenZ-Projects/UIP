@@ -210,3 +210,21 @@ export async function getUipInvolvedPageData() {
     return null;
   }
 }
+
+/**
+ * Fetch UIP ProgramsPage Global data from Payload CMS
+ */
+export async function getUipProgramsPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-programs-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP Programs Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipProgramsPageData error:', err);
+    return null;
+  }
+}

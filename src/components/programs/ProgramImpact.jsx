@@ -1,40 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const STATS = [
-  { 
-    value: '75%+', 
-    label: 'Reported Improved Well-Being', 
-    desc: 'Participants said they felt more connected, supported, and positive after attending a United in Pride event or program.' 
-  },
-  { 
-    value: '80%+', 
-    label: 'Felt a Greater Sense of Belonging', 
-    desc: 'Participants shared that they felt welcomed, accepted, and part of a community.' 
-  },
-  { 
-    value: '70%+', 
-    label: 'Made a New Connection or Friendship', 
-    desc: 'Many participants left with at least one new friendship, peer connection, or support contact.' 
-  },
-  { 
-    value: '90%+', 
-    label: 'Would Attend Again or Recommend', 
-    desc: 'Participants expressed strong interest in returning and encouraging others to join United in Pride.' 
-  },
-];
+export default function ProgramImpact({ heading, subtitle, stats }) {
+  if (!stats || stats.length === 0) return null;
 
-export default function ProgramImpact() {
   return (
     <section className="py-24 px-6 bg-[#f8fafc]">
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-black text-slate-900 mb-4">Program Impact</h2>
-          <p className="text-slate-500 text-lg">Real results from culturally-affirming community programs</p>
+          <h2 className="text-4xl font-black text-slate-900 mb-4">{heading || 'Program Impact'}</h2>
+          {subtitle && <p className="text-slate-500 text-lg">{subtitle}</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {STATS.map((stat, i) => (
+          {stats.map((stat, i) => (
             <motion.div 
               key={i} 
               initial={{ opacity: 0, scale: 0.9 }}

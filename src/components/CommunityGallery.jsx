@@ -1,3 +1,4 @@
+import { getMediaUrl } from '../services/api';
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 
@@ -16,8 +17,11 @@ const GALLERY_IMAGES = [
   img1, img2, img3, img4, img5, img6, img7, img8, img9, img10
 ];
 
-export default function CommunityGallery() {
+export default function CommunityGallery({ images }) {
   const scrollRef = useRef(null);
+
+  const cmsImages = images && images.length > 0 ? images.map(item => getMediaUrl(item?.image) || item).filter(Boolean) : [];
+  const displayImages = cmsImages.length > 0 ? cmsImages : GALLERY_IMAGES;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
