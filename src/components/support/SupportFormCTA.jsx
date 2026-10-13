@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiService } from '../../api/apiService'; // Apne path ke hisaab se adjust karein
 
-export default function SupportFormCTA() {
+export default function SupportFormCTA({ data }) {
+  const ctaBadge = data?.support_cta_badge || "Need Personalized Guidance?";
+  const ctaTitle = data?.support_cta_title || "Let Us Help You Navigate";
+  const ctaDesc = data?.support_cta_description || "Tell us what you're looking for, and our team will connect you with the right verified partners and resources.";
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
