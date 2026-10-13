@@ -5,6 +5,7 @@ import {
   CMS_URL,
   populateMediaCache,
   getUipHomePageData,
+  getUipAboutPageData,
 } from '../services/api';
 
 /**
@@ -31,7 +32,11 @@ export function isValidCmsData(d) {
     d.about_title ||
     d.community_vid_title ||
     d.donate_title ||
-    d.partners_title
+    d.partners_title ||
+    d.mission_title ||
+    d.leadership_title ||
+    d.why_title ||
+    d.values_title
   );
 }
 
@@ -235,4 +240,12 @@ export const useUipHomePageLive = createUipLiveHook(
   'uip-home-page-data',
   getUipHomePageData,
   'uip-home-page'
+);
+
+// Export individual hook for UIP About Page
+export const useUipAboutPageLive = createUipLiveHook(
+  'uip-about-page',
+  'uip-about-page-data',
+  getUipAboutPageData,
+  'uip-about-page'
 );

@@ -102,3 +102,21 @@ export function getMediaUrl(mediaObj, fallbackUrl = null) {
 
   return fallbackUrl;
 }
+
+/**
+ * Fetch UIP AboutPage Global data from Payload CMS
+ */
+export async function getUipAboutPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/uip-about-page?depth=2&_t=${Date.now()}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch UIP About Page data: ${res.statusText}`);
+    }
+    const data = await res.json();
+    populateMediaCache(data);
+    return data;
+  } catch (err) {
+    console.error('[API] getUipAboutPageData error:', err);
+    return null;
+  }
+}

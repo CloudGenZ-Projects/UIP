@@ -60,7 +60,7 @@ export default function Donate({ data }) {
               to={ctaLink} 
               className="flex items-center justify-center w-full py-4 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6] text-white rounded-2xl font-bold shadow-lg shadow-purple-500/20 mb-4 transform hover:scale-[1.02] hover:shadow-purple-500/30 hover:shadow-xl active:scale-[0.98] transition-all duration-300 tracking-wide text-base"
             >
-              {ctaLabel} 💖
+              {ctaLabel} 💜
             </Link>
           )}
 
