@@ -1,27 +1,16 @@
-import { getMediaUrl } from '../services/api';
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-
-import img1 from '../assets/gallery/g1.jpeg';
-import img2 from '../assets/gallery/g2.jpeg';
-import img3 from '../assets/gallery/g3.jpeg';
-import img4 from '../assets/gallery/g4.jpeg';
-import img5 from '../assets/gallery/g5.jpeg';
-import img6 from '../assets/gallery/g6.jpeg';
-import img7 from '../assets/gallery/g7.jpeg';
-import img8 from '../assets/gallery/g8.jpeg';
-import img9 from '../assets/gallery/g9.jpeg';
-import img10 from '../assets/gallery/g10.jpeg';
-
-const GALLERY_IMAGES = [
-  img1, img2, img3, img4, img5, img6, img7, img8, img9, img10
-];
+import { getMediaUrl } from '../services/api';
 
 export default function CommunityGallery({ images }) {
   const scrollRef = useRef(null);
 
-  const cmsImages = images && images.length > 0 ? images.map(item => getMediaUrl(item?.image) || item).filter(Boolean) : [];
-  const displayImages = cmsImages.length > 0 ? cmsImages : GALLERY_IMAGES;
+  // Purely CMS data - NO local image fallbacks
+  const activeGalleryImages = images && images.length > 0
+    ? images.map((item) => getMediaUrl(item?.image || item)).filter(Boolean)
+    : [];
+
+  if (!activeGalleryImages || activeGalleryImages.length === 0) return null;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -34,9 +23,7 @@ export default function CommunityGallery({ images }) {
   };
 
   return (
-    // Removed bg-[#f8fafc] and reduced padding so it fits in the Hero
     <div className="py-8 w-full overflow-hidden relative">
-      
       <style>{`
         .hide-scroll {
           -ms-overflow-style: none;
@@ -48,7 +35,6 @@ export default function CommunityGallery({ images }) {
       `}</style>
 
       <div className="relative w-full group">
-        
         {/* Floating Left Button */}
         <button 
           onClick={() => scroll('left')}
@@ -75,10 +61,9 @@ export default function CommunityGallery({ images }) {
         <div 
           ref={scrollRef}
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scroll pb-12 pt-4 pr-12 scroll-smooth"
-          // This keeps the first image aligned nicely with standard max-width, while letting the track extend off-screen
           style={{ paddingLeft: 'max(1.5rem, calc((100vw - 1000px) / 2))' }}
         >
-          {GALLERY_IMAGES.map((src, i) => (
+          {activeGalleryImages.map((src, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.95 }}

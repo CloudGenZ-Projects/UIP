@@ -39,9 +39,11 @@ export default function ProgramsHero({ data }) {
       </div>
 
       {/* FULL WIDTH GALLERY SECTION */}
-      <div className="relative z-10 w-full mb-10">
-        <CommunityGallery images={data.galleryImages} />
-      </div>
+      {data?.galleryImages && data.galleryImages.length > 0 && (
+        <div className="relative z-10 w-full mb-10">
+          <CommunityGallery images={data.galleryImages} />
+        </div>
+      )}
 
       {/* Floating Box (Constrained Width) */}
       <div className="relative z-10 px-6 w-full max-w-[1000px]">
