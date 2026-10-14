@@ -1,38 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import InvolvedHero from '../components/involved/involedHero';
 import VolunteerRoles from '../components/involved/VolunteerRoles';
 import DonationSection from '../components/involved/DonationSection';
 import ImpactStats from '../components/involved/ImpactStats';
-import { getUipInvolvedPageData } from '../services/api';
 import { useUipInvolvedPageLive } from '../hooks/usePayloadLive';
 
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function InvolvedPage() {
-  const [initialData, setInitialData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getUipInvolvedPageData()
-      .then((data) => {
-        if (data) setInitialData(data);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  const liveData = useUipInvolvedPageLive(initialData);
-  const data = liveData || initialData;
-
-  if (loading && !data) {
-    return (
-      <div className="min-h-screen bg-[#0f0a2e] flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+  const { data } = useUipInvolvedPageLive();
 
   return (
     <div className="min-h-screen bg-white">

@@ -33,6 +33,15 @@ export function isValidCmsData(d) {
     d.id ||
     d.globalType ||
     d.slug ||
+    d.heroBadge ||
+    d.heroTitleLine1 ||
+    d.programsList ||
+    d.volunteerRoles ||
+    d.impactStats ||
+    d.donationTiers ||
+    d.zeffyDonationUrl ||
+    d.contactEmail ||
+    d.formTitle ||
     d.hero_badge ||
     d.hero_title_line_1 ||
     d.hero_description ||
