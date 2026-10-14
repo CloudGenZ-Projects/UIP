@@ -17,6 +17,7 @@ const formCardStyle = {
   backgroundImage: 'linear-gradient(#fff, #fff), linear-gradient(135deg, #FF6B6B22, #A855F722, #3B82F622)',
 };
 
+// Social Media Links Array
 const socialLinks = [
   {
     i: <Instagram size={19} />,
@@ -34,6 +35,7 @@ const socialLinks = [
     href: 'https://www.linkedin.com/company/youpride/'
   },
   {
+    // TikTok Custom SVG Icon
     i: (
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
@@ -45,6 +47,7 @@ const socialLinks = [
 ];
 
 export default function ContactMain({ data }) {
+  // Form State
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -53,12 +56,14 @@ export default function ContactMain({ data }) {
     message: ''
   });
 
+  // Submission Status State
   const [status, setStatus] = useState({
     loading: false,
     success: false,
     error: ''
   });
 
+  // Handle Input Changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -66,6 +71,7 @@ export default function ContactMain({ data }) {
     });
   };
 
+  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ loading: true, success: false, error: '' });
@@ -76,6 +82,7 @@ export default function ContactMain({ data }) {
         formId: 'uip-contact' 
       };
 
+      // Calling the API Service with updated payload
       await apiService.submitContact(payload);
 
       await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
@@ -86,7 +93,10 @@ export default function ContactMain({ data }) {
         body: JSON.stringify(payload),
       });
 
+      // On Success
       setStatus({ loading: false, success: true, error: '' });
+
+      // Reset the form fields
       setFormData({
         name: '',
         email: '',
@@ -95,6 +105,7 @@ export default function ContactMain({ data }) {
         message: ''
       });
 
+      // Hide success message after 5 seconds
       setTimeout(() => setStatus((prev) => ({ ...prev, success: false })), 5000);
 
     } catch (error) {
@@ -107,7 +118,7 @@ export default function ContactMain({ data }) {
     <section className="py-24 px-6 bg-white relative z-10">
       <div className="max-w-[1200px] mx-auto grid lg:grid-cols-5 gap-16 items-start">
 
-        {/* Left Column: Form */}
+        {/* Left Column: Form with Gradient Border */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -189,70 +200,65 @@ export default function ContactMain({ data }) {
               ></textarea>
             </div>
 
+            <p className="text-xs text-slate-400">
+              Your information is kept confidential and will only be used to respond to your inquiry.
+            </p>
+
+            {/* Status Messages */}
             {status.success && (
-              <p className="text-green-600 font-bold text-sm bg-green-50 p-4 rounded-xl border border-green-200">
-                Thank you! Your message has been sent successfully. We will be in touch soon.
-              </p>
+              <div className="p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl font-bold">
+                Thank you! Your message has been sent successfully. 💜
+              </div>
             )}
             {status.error && (
-              <p className="text-red-500 font-bold text-sm bg-red-50 p-4 rounded-xl border border-red-200">
+              <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl font-bold">
                 {status.error}
-              </p>
+              </div>
             )}
 
             <button
               type="submit"
               disabled={status.loading}
-              className="w-full py-5 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6] text-white rounded-2xl font-black text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all disabled:opacity-50"
+              className={`w-full py-5 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6] text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all ${status.loading ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-1'}`}
             >
-              {status.loading ? 'Sending...' : 'Send Message'}
+              {status.loading ? 'Sending Message...' : 'Send Message 💜'}
             </button>
           </form>
         </motion.div>
 
-        {/* Right Column: Contact Details */}
+        {/* Right Column: Info & Map */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          className="lg:col-span-2 space-y-10"
+          className="lg:col-span-2 space-y-12"
         >
           <div>
-            <h2 className="text-3xl font-black text-slate-900 mb-8">Contact Information</h2>
-            
+            <h2 className="text-3xl font-black text-slate-900 mb-8">{data?.connectHeading || 'Connect With Us'}</h2>
             <div className="space-y-8">
-              <ContactBlock
-                icon="✉️"
-                title="Email Us"
-                detail={data?.contactEmail || 'hello@unitedinpride.org'}
-                sub={data?.contactEmailSub || 'We typically respond within 24-48 hours'}
-                link={`mailto:${data?.contactEmail || 'hello@unitedinpride.org'}`}
+              <ContactBlock 
+                icon="✉️" 
+                title="Email Us" 
+                detail={data?.contactEmail || "info@unitedinpride.ca"} 
+                sub={data?.contactEmailSub || "We typically respond within 24–48 hours"} 
               />
-
-              <ContactBlock
-                icon="📞"
-                title="Call Us"
-                detail={data?.contactPhone || '+1 (613) 296-3392'}
-                sub={data?.contactPhoneSub || 'Monday - Friday, 9am - 5pm EST'}
-                link={`tel:${data?.contactPhone || '+16132963392'}`}
-              />
-
               <div className="flex gap-6">
                 <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
                   📱
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">Direct Message</h4>
-                  <div className="flex gap-3 my-1">
+                  <h4 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">Social Media</h4>
+                  <p className="text-xl font-black text-slate-900 mb-2">{data?.socialHandle || '@unitedinpride'}</p>
+                  <div className="flex flex-wrap gap-3 mb-2">
+                    <a href="https://www.facebook.com/people/United-in-Pride/61579117565491/?mibextid=wwXIfr&rdid=yKDvw6J1FEk8NY4q&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19nM1NbmSt%2F%3Fmibextid%3DwwXIfr" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1"><Facebook size={15} /> Facebook</a>
                     <a href="https://www.tiktok.com/@unitedinpride1?_t=ZS-8yhxvJbUwYi&_r=1" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" /></svg> TikTok
                     </a>
                     <a href="https://www.linkedin.com/company/youpride/" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1"><Linkedin size={15} /> LinkedIn</a>
                     <a href="https://www.instagram.com/unite_in_pride?igsh=Z3VtdjJsaTB5ZTR3&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1"><Instagram size={15} /> Instagram</a>
                   </div>
-                  <p className="text-sm text-slate-500">Prefer a quicker response? Reach out via social media</p>
+                  <p className="text-sm text-slate-500">{data?.socialSub || 'Prefer a quicker response? Reach out via social media'}</p>
                 </div>
               </div>
-
               <div className="flex gap-6">
                 <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
                   💬
@@ -260,15 +266,14 @@ export default function ContactMain({ data }) {
                 <div>
                   <h4 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">WhatsApp</h4>
                   <a href={data?.whatsappUrl || "https://whatsapp.com/channel/0029VbC7CIMJpe8eQBfVNN3K"} target="_blank" rel="noopener noreferrer" className="inline-block mt-1 px-5 py-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-bold text-sm rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">Join Our Channel →</a>
-                  <p className="text-sm text-slate-500 mt-1">Stay connected with our WhatsApp community</p>
+                  <p className="text-sm text-slate-500 mt-1">{data?.whatsappSub || 'Stay connected with our WhatsApp community'}</p>
                 </div>
               </div>
-
-              <ContactBlock
-                icon="📍"
-                title="Location"
-                detail={data?.locationTitle || "Ottawa, Ontario"}
-                sub={data?.locationSub || "Programs are hosted at trusted community partner spaces across the city"}
+              <ContactBlock 
+                icon="📍" 
+                title="Location" 
+                detail={data?.locationTitle || "Ottawa, Ontario"} 
+                sub={data?.locationSub || "Programs are hosted at trusted community partner spaces across the city"} 
               />
 
               <ContactBlock
@@ -277,13 +282,13 @@ export default function ContactMain({ data }) {
                 detail={
                   <span className="text-base leading-snug block">{data?.availabilityTitle || 'Our team operates flexibly to support community needs.'}</span>
                 }
-                sub={data?.availabilitySub || "Most responses are provided within 24–48 hours. Your information is kept confidential and used only to support you and connect you to appropriate resources."}
+                sub={data?.availabilitySub || "Most responses are provided within 24–48 hours.\nYour information is kept confidential and used only to support you and connect you to appropriate resources."}
               />
             </div>
           </div>
 
           <div className="pt-5 border-t border-slate-100">
-            <h3 className="font-bold text-xl text-slate-900 mb-6">Follow Our Journey</h3>
+            <h3 className="font-bold text-xl text-slate-900 mb-6">{data?.followHeading || 'Follow Our Journey'}</h3>
             <div className="flex gap-4 mb-4">
               {socialLinks.map((s, idx) => (
                 <a
@@ -298,7 +303,7 @@ export default function ContactMain({ data }) {
                 </a>
               ))}
             </div>
-            <p className='text-sm text-slate-500'>Stay updated with our events, stories, and community highlights</p>
+            <p className='text-sm text-slate-500'>{data?.followSub || 'Stay updated with our events, stories, and community highlights'}</p>
           </div>
 
           {/* Map */}
@@ -325,7 +330,8 @@ export default function ContactMain({ data }) {
   );
 }
 
-function ContactBlock({ icon, title, detail, sub, link }) {
+// Reusable Contact Block Component
+function ContactBlock({ icon, title, detail, sub }) {
   return (
     <div className="flex gap-6">
       <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
@@ -333,13 +339,7 @@ function ContactBlock({ icon, title, detail, sub, link }) {
       </div>
       <div>
         <h4 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">{title}</h4>
-        {link ? (
-          <a href={link} className="text-xl font-black text-slate-900 mb-1 hover:text-[#A855F7] transition-colors block">
-            {detail}
-          </a>
-        ) : (
-          <div className="text-xl font-black text-slate-900 mb-1">{detail}</div>
-        )}
+        <div className="text-xl font-black text-slate-900 mb-1">{detail}</div>
         <p className="text-sm text-slate-500">{sub}</p>
       </div>
     </div>
