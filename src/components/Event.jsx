@@ -48,6 +48,7 @@ export default function Events() {
   const localTodayStr = `${yyyy}-${mm}-${dd}`;
 
   const getDefaultEvents = (data) => {
+    if (!Array.isArray(data)) return [];
     const upcomingEvents = data.filter(ev => ev.date >= localTodayStr);
     const groupedByDate = upcomingEvents.reduce((acc, ev) => {
       if (!acc[ev.date]) {
@@ -69,8 +70,9 @@ export default function Events() {
     const fetchEvents = async () => {
       try {
         const response = await apiService.getEvents();
-        setEventsData(response.data);
-        setVisibleEvents(getDefaultEvents(response.data));
+        const evts = Array.isArray(response.data) ? response.data : [];
+        setEventsData(evts);
+        setVisibleEvents(getDefaultEvents(evts));
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
