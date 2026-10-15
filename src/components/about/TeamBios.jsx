@@ -1,162 +1,92 @@
 import React, { useState } from 'react';
+import { getMediaUrl } from '../../services/api';
 
-import marshaImg from '../../assets/Marsha.jpeg';
-import winifredImg from '../../assets/Winifred (1).jpeg';
-import raymondImg from '../../assets/Raymond.jpeg';
-import khaledImg from '../../assets/Khaled.jpeg';
-import saddicImg from '../../assets/Saddic.jpeg';
-import corettaImg from '../../assets/Coretta Gordon.jpeg';
-import Xtra from '../../assets/Xtra.jpeg';
-const TEAM_MEMBERS = [
-  {
-    id: 'winifred',
-    name: 'Winifred Ikilai',
-    role: 'Board Member',
-    image: winifredImg,
-    bgColor: 'bg-indigo-50/60',
-    accent: 'text-indigo-600',
-    bio: `Winifred Ikilai is a Canada-based Public Health Proffessional, Social Worker, HIV Activist, and Women and Girls’ Rights Advocate with over 10 years of experience leading community-centered programs in HIV, sexual and reproductive health, mental health, gender equity, housing support, and community development. She holds a Bachelor’s degree in Development Studies from Makerere University, a Postgraduate qualification in International Gender Equality Studies from the University of Iceland and a Master of Public Health specializing in Maternal and Adolescent Health. Currently, Winifred serves as the Project Coordinator for the City of Toronto Urban Health Sexual Health Fund under the National Network for Immigrant and Refugee Rights, where she supports initiatives focused on advancing sexual health education, equitable healthcare access, and community empowerment among immigrant and refugee populations. She also works with Neighbours Community Homes, supporting vulnerable and marginalized communities in navigating housing challenges, accessing stable housing, mental health support, and tenant eviction prevention services. In addition, she is the Founder and Executive Director of Healthy Empowered and Resilient Initiative (HER-Initiative), an organization empowering immigrant and refugee communities in Canada through settlement support, mental health advocacy, economic empowerment, HIV awareness, and gender-based violence prevention initiatives. Winifred currently serves as a Champion to End Gender-Based Violence among immigrant and refugee communities through the Ontario Council of Agencies Serving Immigrants initiative. Her work focuses on creating safe spaces, strengthening community resilience, and improving access to equitable health and social services for underserved populations. Globally, Winifred is recognized as an HIV and SRHR advocate who has contributed to policy advocacy, HIV prevention research, and community mobilization efforts across Africa and internationally. As an AVAC (AIDS Vaccine Advocacy Coalition) Alumni Fellow and International AIDS Society HIV Cure Research Fellow, she has championed community engagement in HIV prevention, treatment literacy, HIV cure research, and women-centered HIV prevention technologies including the HIV Vaginal Dapivirine Ring and long-acting PrEP. Through advocacy, research, mentorship, and community empowerment, Winifred continues to advance health equity, gender justice, and social inclusion for women, girls, immigrants, refugees, and people living with HIV.`
-  },
-  {
-    id: 'khaled',
-    name: 'Khaled Salam',
-    role: 'Board Member',
-    image: khaledImg,
-    bgColor: 'bg-rose-50/60',
-    accent: 'text-rose-600',
-    bio: `Khaled Salam is the Executive Director of the AIDS Committee of Ottawa (ACO).\n\nKhaled has been with ACO for 23 years in various capacities. He has previously provided direct support to people living with HIV, in his capacity as support worker from 2004 to 2007, after which he became Manager of ACO’s support services team from 2007 to 2011. Khaled was hired as the interim Executive Director of ACO in 2011, then as the permanent Executive Director in 2013. \n\nKhaled graduated from Algonquin College in 2003 from the SSW Program and identifies as a member of the BIPOC community.`
-  },
-  {
-    id: 'saddic',
-    name: 'Saddic Lubega',
-    role: 'Board Member',
-    image: saddicImg,
-    bgColor: 'bg-teal-50/60',
-    accent: 'text-teal-600',
-    bio: `Saddic Lubega is a Teaching Assistant with Youth Empowering Parents (YEP), a partner organization with Toronto District School Board (tdsb). My passion lies in helping students/learners achieving their goals. \n\nI'm an African Immigrant with a strong bond for the 2SLGBTIQA+ community where I participate in activities that include supporting newcomers with access to information and resources in starting their new life in Canada 🇨🇦`
-  },
-  {
-    id: 'marsha',
-    name: 'Marsha Clyne',
-    role: 'Board Member',
-    image: marshaImg,
-    bgColor: 'bg-amber-50/60',
-    accent: 'text-amber-600',
-    bio: `Marsha Clyne is a nonprofit leader, fundraising strategist, and Founder of True Impact Philanthropy, where she supports charities and grassroots organizations across Canada with fundraising strategy, partnerships, and organizational growth.\n\nWith over 10 years of experience in the nonprofit sector, she has worked with organizations focused on community development, youth empowerment, health, women’s leadership, and equity driven initiatives. Marsha holds a Master’s degree in Philanthropy and Nonprofit Leadership, a Bachelor’s degree in Peace and Conflict Studies, and an Associate degree in Social Communications.\n\nAs a Board Member of United in Pride, she hopes to bring strategic leadership, fundraising expertise, and a strong commitment to building inclusive, empowering, and sustainable support systems for the LGBTQ+ community.`
-  },
-  {
-    id: 'raymond',
-    name: 'Raymond Gukiina',
-    role: 'Board Member',
-    image: raymondImg,
-    bgColor: 'bg-emerald-50/60',
-    accent: 'text-emerald-600',
-    bio: `Raymond Gukiina is a refugee community leader, youth advocate and the Executive Director of the National Network for Immigrants and Refugees– Canada (NNIR-Canada). Work focuses on supporting Black immigrants, refugees and LGBTQI+ communities through culturally responsive programming centered on health equity, youth empowerment, leadership and community engagement. Passionate about creating safe and inclusive spaces that uplift underserved communities and amplify lived experiences through advocacy, dialogue and collaboration.`
-  },
-
-  {
-    id: 'coretta ',
-    name: 'Coretta Gordon',
-    role: 'Board Member',
-    image: corettaImg,
-    bgColor: 'bg-emerald-50/60',
-    accent: 'text-emerald-600',
-    bio: `Coretta Gordon, known to friends as, Corie, is a 1st generation Canadian who's parents immigrated to Canada from Jamaica.
-She works as a Financial Management Advisor with a Bachelor's in Commerce degree for Accountancy from Concordia University and is currently working towards a Chartered Professional Accountant designation.
-Corie also has background in Public Relations from McGill University. 
-As a lover of the Arts, Corie has a diverse interest including dance, music, fashion, & drawing. She studied piano for 12-years. Her hobbies include doing classical ballet, competing & performing Highland dance, and horseback riding.
-She is a strong proponent & advocate for LGBTQ2+ rights and believes that everyone deserves dignity, respect, safety.`
-  },
-  
-  {
-    id: 'Xtra ',
-    name: 'Xtra ',
-    role: 'Board Member',
-    image: Xtra,
-    bgColor: 'bg-emerald-50/60',
-    accent: 'text-emerald-600',
-    bio: `Xtra is a force,an electrifying Canadian drag queen whose artistry is rooted in a bold fusion of cultures and African heritage. As a Black African trans woman, she does not just perform femininity,she reclaims it, embodies it, and celebrates it with unapologetic power, sensuality, and grace.
-
-Her journey is one of courage and defiance,rising through adversity, challenging societal norms, and carving out space in a world that too often tries to silence voices like hers. Every step of her story is a testament to resilience, self-love, and the radical act of living authentically.
-
-Through drag, Xtra transforms the stage into a platform for visibility, liberation, and empowerment. She doesn’t just entertain,she disrupts, she inspires, and she creates space for others, especially those from marginalized communities, to see themselves, to feel seen, and to exist boldly without apology.
-
-With magnetic energy and a commanding presence, Xtra leaves audiences captivated and transformed,carrying with them a powerful message: to live freely, love deeply, and stand fully in their truth.`
-  },
-
-
-
+const PALETTES = [
+  { bgColor: 'bg-indigo-50/60', accent: 'text-indigo-600' },
+  { bgColor: 'bg-rose-50/60', accent: 'text-rose-600' },
+  { bgColor: 'bg-teal-50/60', accent: 'text-teal-600' },
+  { bgColor: 'bg-amber-50/60', accent: 'text-amber-600' },
+  { bgColor: 'bg-emerald-50/60', accent: 'text-emerald-600' },
 ];
 
-export default function TeamBios() {
-  // Track which cards are expanded
+export default function TeamBios({ data }) {
   const [expandedCards, setExpandedCards] = useState({});
-
-  // Max characters to show before truncating
   const MAX_LENGTH = 280;
+
+  const teamMembers = data?.team_members || [];
+  if (!teamMembers || teamMembers.length === 0) return null;
 
   const toggleExpand = (id) => {
     setExpandedCards((prev) => ({
       ...prev,
-      [id]: !prev[id]
+      [id]: !prev[id],
     }));
   };
 
   return (
     <section className="py-24 px-6 bg-white">
       <div className="max-w-[1200px] mx-auto">
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {TEAM_MEMBERS.map((person) => {
-            const isLongText = person.bio.length > MAX_LENGTH;
-            const isExpanded = expandedCards[person.id];
+          {teamMembers.map((person, index) => {
+            const memberId = person.id || String(index);
+            const palette = PALETTES[index % PALETTES.length];
+            const resolvedImg = getMediaUrl(person.image);
+            const bioText = person.bio || '';
+            const isLongText = bioText.length > MAX_LENGTH;
+            const isExpanded = expandedCards[memberId];
 
-            // Truncate at the nearest space to avoid cutting words in half
             const truncatedBio = isLongText
-              ? person.bio.slice(0, MAX_LENGTH).trim() + '...'
-              : person.bio;
+              ? bioText.slice(0, MAX_LENGTH).trim() + '...'
+              : bioText;
 
             return (
               <div
-                key={person.id}
-                className={`h-full p-8 md:p-12 rounded-[3rem] ${person.bgColor} border border-transparent hover:border-slate-100 transition-all shadow-sm flex flex-col relative overflow-hidden`}
+                key={memberId}
+                className={`h-full p-8 md:p-12 rounded-[3rem] ${palette.bgColor} border border-transparent hover:border-slate-100 transition-all shadow-sm flex flex-col relative overflow-hidden`}
               >
                 {/* Decorative Gradient Bar at the bottom */}
                 <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]"></div>
 
                 {/* Header: Profile Image & Role Badge */}
                 <div className="flex flex-col mb-8 gap-5">
-                  <img
-                    src={person.image}
-                    alt={person.name}
-                    /* 
-                      FIXED: Used aspect-square so it's always a perfect square 
-                      and never stretches or cuts off awkwardly on any size!
-                    */
-                    className="w-full aspect-square sm:w-72 sm:h-72 lg:w-64 lg:h-64 xl:w-72 xl:h-72 object-cover object-top rounded-3xl shadow-sm border-4 border-white"
-                  />
-                  <div className="flex">
-                    <span className="bg-white px-4 py-2 rounded-full font-black text-[0.65rem] md:text-xs text-slate-900 uppercase tracking-[0.2em] shadow-sm text-center">
-                      {person.role}
-                    </span>
-                  </div>
+                  {resolvedImg ? (
+                    <img
+                      src={resolvedImg}
+                      alt={person.name}
+                      className="w-full aspect-square sm:w-72 sm:h-72 lg:w-64 lg:h-64 xl:w-72 xl:h-72 object-cover object-top rounded-3xl shadow-sm border-4 border-white"
+                    />
+                  ) : (
+                    <div className="w-full aspect-square sm:w-72 sm:h-72 lg:w-64 lg:h-64 xl:w-72 xl:h-72 bg-white/60 rounded-3xl flex items-center justify-center text-4xl shadow-sm border-4 border-white">
+                      🏳️‍🌈
+                    </div>
+                  )}
+                  {person.role && (
+                    <div className="flex">
+                      <span className="bg-white px-4 py-2 rounded-full font-black text-[0.65rem] md:text-xs text-slate-900 uppercase tracking-[0.2em] shadow-sm text-center">
+                        {person.role}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Title (Name) & Description (Bio) */}
                 <div className="flex-grow flex flex-col">
-                  <h3 className={`text-3xl md:text-4xl font-black text-slate-900 leading-tight italic mb-4 ${person.accent}`}>
-                    {person.name}
-                  </h3>
+                  {person.name && (
+                    <h3 className={`text-3xl md:text-4xl font-black text-slate-900 leading-tight italic mb-4 ${palette.accent}`}>
+                      {person.name}
+                    </h3>
+                  )}
 
-                  <p className="text-slate-600 text-lg leading-relaxed whitespace-pre-line mb-4">
-                    {isExpanded ? person.bio : truncatedBio}
-                  </p>
+                  {bioText && (
+                    <p className="text-slate-600 text-lg leading-relaxed whitespace-pre-line mb-4">
+                      {isExpanded ? bioText : truncatedBio}
+                    </p>
+                  )}
 
-                  {/* Read More / Read Less Button */}
                   {isLongText && (
                     <button
-                      onClick={() => toggleExpand(person.id)}
-                      className={`mt-auto self-start font-black text-sm uppercase tracking-widest hover:opacity-70 transition-opacity ${person.accent}`}
+                      onClick={() => toggleExpand(memberId)}
+                      className={`mt-auto self-start font-black text-sm uppercase tracking-widest hover:opacity-70 transition-opacity ${palette.accent}`}
                     >
                       {isExpanded ? 'Read Less' : 'Read More'}
                     </button>
@@ -166,7 +96,6 @@ export default function TeamBios() {
             );
           })}
         </div>
-
       </div>
     </section>
   );

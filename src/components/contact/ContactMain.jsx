@@ -9,7 +9,7 @@ import {
   Mail,
   Clock
 } from 'lucide-react';
-import { apiService } from '../../api/apiService'; // Make sure this path matches your folder structure!
+import { apiService } from '../../api/apiService';
 
 const formCardStyle = {
   backgroundOrigin: 'border-box',
@@ -46,7 +46,7 @@ const socialLinks = [
   }
 ];
 
-export default function ContactMain() {
+export default function ContactMain({ data }) {
   // Form State
   const [formData, setFormData] = useState({
     name: '',
@@ -77,7 +77,6 @@ export default function ContactMain() {
     setStatus({ loading: true, success: false, error: '' });
 
     try {
-      
       const payload = {
         ...formData,
         formId: 'uip-contact' 
@@ -86,7 +85,7 @@ export default function ContactMain() {
       // Calling the API Service with updated payload
       await apiService.submitContact(payload);
 
-       await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
+      await fetch(`https://formsubmit.cloudgenz.com/submit/${payload.formId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,84 +126,82 @@ export default function ContactMain() {
           className="lg:col-span-3 bg-white border-2 border-transparent rounded-[3rem] p-8 md:p-12 shadow-2xl"
         >
           <div className="mb-10">
-            <h2 className="text-3xl font-black text-slate-900 mb-2">Send Us a Message</h2>
-            <p className="text-slate-500">Fill out the form below and our team will get back to you.</p>
+            <h2 className="text-3xl font-black text-slate-900 mb-2">{data?.formTitle || 'Send Us a Message'}</h2>
+            <p className="text-slate-500">{data?.formSubtitle || 'Fill out the form below and our team will get back to you.'}</p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-2">Full Name *</label>
+                <label className="text-sm font-bold text-slate-700">Full Name</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Your full name"
-                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-[#A855F7] transition-all outline-none"
+                  placeholder="Your Name"
                   required
+                  className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-semibold text-slate-900 focus:ring-2 focus:ring-[#A855F7] outline-none"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-2">Email Address *</label>
+                <label className="text-sm font-bold text-slate-700">Email Address</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="your@email.com"
-                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-[#A855F7] transition-all outline-none"
+                  placeholder="you@email.com"
                   required
+                  className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-semibold text-slate-900 focus:ring-2 focus:ring-[#A855F7] outline-none"
                 />
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-2">Phone Number</label>
+                <label className="text-sm font-bold text-slate-700">Phone (Optional)</label>
                 <input
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="(optional – only if you prefer to be contacted this way)"
-                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-[#A855F7] transition-all outline-none placeholder:text-sm"
+                  placeholder="+1 (555) 000-0000"
+                  className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-semibold text-slate-900 focus:ring-2 focus:ring-[#A855F7] outline-none"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-2">I'm interested in:</label>
+                <label className="text-sm font-bold text-slate-700">Topic of Interest</label>
                 <select
                   name="interest"
                   value={formData.interest}
                   onChange={handleChange}
-                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-[#A855F7] transition-all outline-none font-bold text-slate-600"
+                  className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-semibold text-slate-900 focus:ring-2 focus:ring-[#A855F7] outline-none"
                 >
-                  <option>General Information</option>
-                  <option>Joining a Program</option>
-                  <option>Volunteering</option>
-                  <option>Making a Donation</option>
-                  <option>Corporate Partnering</option>
-                  <option>Media & Press</option>
+                  <option value="General Information">General Information</option>
+                  <option value="Joining Programs">Joining Programs</option>
+                  <option value="Volunteering">Volunteering</option>
+                  <option value="Partnerships">Partnerships</option>
+                  <option value="Donations">Donations</option>
                 </select>
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700 ml-2">Message *</label>
+              <label className="text-sm font-bold text-slate-700">Your Message</label>
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                rows="5"
+                rows={5}
                 placeholder="Tell us how we can help..."
-                className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-[#A855F7] transition-all outline-none resize-none"
                 required
+                className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl font-semibold text-slate-900 focus:ring-2 focus:ring-[#A855F7] outline-none resize-none"
               ></textarea>
             </div>
-            
-            {/* Added Confidentiality Statement */}
-            <p className="text-sm text-slate-500 italic px-2">
-              Your information is kept confidential and used only to support you and connect you to appropriate resources.
+
+            <p className="text-xs text-slate-400">
+              Your information is kept confidential and will only be used to respond to your inquiry.
             </p>
 
             {/* Status Messages */}
@@ -236,16 +233,21 @@ export default function ContactMain() {
           className="lg:col-span-2 space-y-12"
         >
           <div>
-            <h2 className="text-3xl font-black text-slate-900 mb-8">Connect With Us</h2>
+            <h2 className="text-3xl font-black text-slate-900 mb-8">{data?.connectHeading || 'Connect With Us'}</h2>
             <div className="space-y-8">
-              <ContactBlock icon="✉️" title="Email Us" detail="info@unitedinpride.ca" sub="We typically respond within 24–48 hours" />
+              <ContactBlock 
+                icon="✉️" 
+                title="Email Us" 
+                detail={data?.contactEmail || "info@unitedinpride.ca"} 
+                sub={data?.contactEmailSub || "We typically respond within 24–48 hours"} 
+              />
               <div className="flex gap-6">
                 <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
                   📱
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">Social Media</h4>
-                  <p className="text-xl font-black text-slate-900 mb-2">@unitedinpride</p>
+                  <p className="text-xl font-black text-slate-900 mb-2">{data?.socialHandle || '@unitedinpride'}</p>
                   <div className="flex flex-wrap gap-3 mb-2">
                     <a href="https://www.facebook.com/people/United-in-Pride/61579117565491/?mibextid=wwXIfr&rdid=yKDvw6J1FEk8NY4q&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19nM1NbmSt%2F%3Fmibextid%3DwwXIfr" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1"><Facebook size={15} /> Facebook</a>
                     <a href="https://www.tiktok.com/@unitedinpride1?_t=ZS-8yhxvJbUwYi&_r=1" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1">
@@ -254,7 +256,7 @@ export default function ContactMain() {
                     <a href="https://www.linkedin.com/company/youpride/" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1"><Linkedin size={15} /> LinkedIn</a>
                     <a href="https://www.instagram.com/unite_in_pride?igsh=Z3VtdjJsaTB5ZTR3&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#A855F7] hover:underline flex items-center gap-1"><Instagram size={15} /> Instagram</a>
                   </div>
-                  <p className="text-sm text-slate-500">Prefer a quicker response? Reach out via social media</p>
+                  <p className="text-sm text-slate-500">{data?.socialSub || 'Prefer a quicker response? Reach out via social media'}</p>
                 </div>
               </div>
               <div className="flex gap-6">
@@ -263,28 +265,30 @@ export default function ContactMain() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">WhatsApp</h4>
-                  <a href="https://whatsapp.com/channel/0029VbC7CIMJpe8eQBfVNN3K" target="_blank" rel="noopener noreferrer" className="inline-block mt-1 px-5 py-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-bold text-sm rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">Join Our Channel →</a>
-                  <p className="text-sm text-slate-500 mt-1">Stay connected with our WhatsApp community</p>
+                  <a href={data?.whatsappUrl || "https://whatsapp.com/channel/0029VbC7CIMJpe8eQBfVNN3K"} target="_blank" rel="noopener noreferrer" className="inline-block mt-1 px-5 py-2.5 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-bold text-sm rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">Join Our Channel →</a>
+                  <p className="text-sm text-slate-500 mt-1">{data?.whatsappSub || 'Stay connected with our WhatsApp community'}</p>
                 </div>
               </div>
-              <ContactBlock icon="📍" title="Location" detail="Ottawa, Ontario" sub="Programs are hosted at trusted community partner spaces across the city" />
+              <ContactBlock 
+                icon="📍" 
+                title="Location" 
+                detail={data?.locationTitle || "Ottawa, Ontario"} 
+                sub={data?.locationSub || "Programs are hosted at trusted community partner spaces across the city"} 
+              />
 
-              {/* Added Office Hours Here */}
               <ContactBlock
                 icon="🕒"
                 title="Availability"
                 detail={
-                  <span className="text-base leading-snug block">Our team operates flexibly to support community needs.</span>
+                  <span className="text-base leading-snug block">{data?.availabilityTitle || 'Our team operates flexibly to support community needs.'}</span>
                 }
-                sub="Most responses are provided within 24–48 hours.
-                  Your information is kept confidential and used only to support you and connect you to appropriate resources.
-                "
+                sub={data?.availabilitySub || "Most responses are provided within 24–48 hours.\nYour information is kept confidential and used only to support you and connect you to appropriate resources."}
               />
             </div>
           </div>
 
           <div className="pt-5 border-t border-slate-100">
-            <h3 className="font-bold text-xl text-slate-900 mb-6">Follow Our Journey</h3>
+            <h3 className="font-bold text-xl text-slate-900 mb-6">{data?.followHeading || 'Follow Our Journey'}</h3>
             <div className="flex gap-4 mb-4">
               {socialLinks.map((s, idx) => (
                 <a
@@ -299,13 +303,13 @@ export default function ContactMain() {
                 </a>
               ))}
             </div>
-            <p className='text-sm text-slate-500'>Stay updated with our events, stories, and community highlights</p>
+            <p className='text-sm text-slate-500'>{data?.followSub || 'Stay updated with our events, stories, and community highlights'}</p>
           </div>
 
           {/* Map */}
           <div className="relative w-full h-[300px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white group">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d8805.130692564679!2d-75.68435945241849!3d45.37935242108252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d21.547494!2d78.60014749999999!4m5!1s0x4cce0609e36febf7%3A0x840991e9373515c1!2s2451%20Riverside%20Dr.%2C%20Ottawa%2C%20ON%20K1H%207X7%2C%20Canada!3m2!1d45.382172999999995!2d-75.6833748!5e0!3m2!1sen!2sin!4v1774372991048!5m2!1sen!2sin"
+              src={data?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d8805.130692564679!2d-75.68435945241849!3d45.37935242108252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e0!4m3!3m2!1d21.547494!2d78.60014749999999!4m5!1s0x4cce0609e36febf7%3A0x840991e9373515c1!2s2451%20Riverside%20Dr.%2C%20Ottawa%2C%20ON%20K1H%207X7%2C%20Canada!3m2!1d45.382172999999995!2d-75.6833748!5e0!3m2!1sen!2sin!4v1774372991048!5m2!1sen!2sin"}
               width="100%"
               height="100%"
               style={{ border: 0 }}

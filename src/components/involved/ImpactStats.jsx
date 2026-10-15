@@ -1,18 +1,13 @@
 import React from 'react';
 
-const STATS = [
-  { val: "250+", label: "People Supported", desc: "LGBTQ+ newcomers reached" },
-  { val: "45", label: "Active Volunteers", desc: "Dedicated members" },
-  { val: "120", label: "Events Hosted", desc: "Gatherings & sessions" },
-  { val: "15", label: "Countries", desc: "Diverse backgrounds" }
-];
+export default function ImpactStats({ stats }) {
+  if (!stats || stats.length === 0) return null;
 
-export default function ImpactStats() {
   return (
     <section className="py-24 px-6 bg-[#1E1B4B] text-white relative overflow-hidden">
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
-          {STATS.map((s, i) => (
+          {stats.map((s, i) => (
             <div key={i} className="text-center">
               <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B6B] to-[#A855F7] mb-2">
                 {s.val}

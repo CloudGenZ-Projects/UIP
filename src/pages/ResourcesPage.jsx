@@ -5,28 +5,22 @@ import Footer from '../components/Footer';
 import ResourcesHero from '../components/resources/ResourcesHero';
 import ResourceNavigationIntro from '../components/resources/ResourceNavigationIntro';
 import ResourceDirectory from '../components/resources/ResourceDirectory';
-import ResourcesCTA from '../components/resources/ResourcesCTA';
 import SupportFormCTA from '../components/support/SupportFormCTA';
+import { useUipPartnersPageLive } from '../hooks/usePayloadLive';
 
 export default function ResourcesPage() {
+  const { data } = useUipPartnersPageLive();
+
   return (
     <div className="min-h-screen bg-white font-sans text-pride-navy">
-      
-      {/* 1. Global Navbar */}
       <Navbar />
-      
-      {/* 2. Page Content */}
       <main id="resources">
-        <ResourcesHero />
-        <ResourceNavigationIntro />
-        <ResourceDirectory />
-        {/* <ResourcesCTA /> */}
-        <SupportFormCTA/>
+        <ResourcesHero data={data} />
+        <ResourceNavigationIntro data={data} />
+        <ResourceDirectory data={data} />
+        <SupportFormCTA data={data} />
       </main>
-
-      {/* 3. Global Footer */}
       <Footer />
-      
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-export default function Donate() {
+export default function Donate({ data }) {
   const [isMonthly, setIsMonthly] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState(50);
   const [customAmount, setCustomAmount] = useState('');
@@ -15,6 +15,12 @@ export default function Donate() {
   };
 
   const currentAmt = customAmount || selectedAmount;
+  const tiers = data?.impactTiers || [
+    { amount: 25, displayAmount: '$25', desc: 'One wellness circle session for a newcomer' },
+    { amount: 50, displayAmount: '$50', desc: 'Essential workshop materials and legal resources' },
+    { amount: 100, displayAmount: '$100', desc: 'Community dinner and networking for 20 people' },
+    { amount: 250, displayAmount: '$250', desc: 'Monthly transportation support for participants' }
+  ];
 
   return (
     <section className="py-24 px-6 bg-[#f8fafc]">
@@ -38,11 +44,8 @@ export default function Donate() {
             <input type="text" placeholder="Custom Amount" value={customAmount} onChange={handleCustomChange} className="w-full pl-12 pr-6 py-4 bg-slate-50 border-none rounded-2xl font-bold text-slate-900 focus:ring-2 focus:ring-[#A855F7] outline-none" />
           </div>
 
-          {/* ================================== */}
-          {/* UPDATED GIVE BUTTON WITH ZEFFY LINK */}
-          {/* ================================== */}
           <a 
-            href="https://www.zeffy.com/en-CA/donation-form/youre-not-alone"
+            href={data?.zeffyDonationUrl || "https://www.zeffy.com/en-CA/donation-form/youre-not-alone"}
             target="_blank"
             rel="noopener noreferrer"
             className="block text-center w-full py-5 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6] text-white rounded-[1.5rem] font-black text-xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all mb-4"
@@ -50,21 +53,22 @@ export default function Donate() {
             Give ${currentAmt || 0}{isMonthly ? '/mo' : ''} 💜
           </a>
           
-          <p className="text-center text-[0.7rem] text-slate-400 font-bold uppercase tracking-[0.2em]">Secure Tax-Deductible Donation</p>
+          <p className="text-center text-[0.7rem] text-slate-400 font-bold uppercase tracking-[0.2em]">{data?.taxDeductibleNote || 'Secure Tax-Deductible Donation'}</p>
         </motion.div>
 
         {/* Right: Impact */}
         <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} className="bg-[#1e1b4b] p-12 rounded-[3rem] text-white relative overflow-hidden">
-          <h2 className="text-3xl font-black mb-10">Your Impact</h2>
+          <h2 className="text-3xl font-black mb-10">{data?.impactHeading || 'Your Impact'}</h2>
           <div className="space-y-8 relative z-10">
-            <ImpactItem amt="$25" desc="One wellness circle session for a newcomer" active={currentAmt >= 25} />
-            <ImpactItem amt="$50" desc="Essential workshop materials and legal resources" active={currentAmt >= 50} />
-            <ImpactItem amt="$100" desc="Community dinner and networking for 20 people" active={currentAmt >= 100} />
-            <ImpactItem amt="$250" desc="Monthly transportation support for participants" active={currentAmt >= 250} />
+            {tiers.map((tier, i) => (
+              <ImpactItem key={i} amt={tier.displayAmount || `$${tier.amount}`} desc={tier.desc} active={currentAmt >= (tier.amount || 0)} />
+            ))}
           </div>
-          <div className="mt-12 pt-10 border-t border-white/10 italic text-white/50 text-sm">
-            "Every contribution helps create a safe and welcoming space for those fleeing persecution."
-          </div>
+          {data?.impactQuote && (
+            <div className="mt-12 pt-10 border-t border-white/10 italic text-white/50 text-sm">
+              {data.impactQuote}
+            </div>
+          )}
           <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[100px]"></div>
         </motion.div>
       </div>
