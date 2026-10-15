@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { getMediaUrl } from '../services/api';
 
 export default function Partners({ data }) {
-  const partners = data?.partners || [];
+  const partners = Array.isArray(data?.partners) ? data.partners : [];
   if (!partners || partners.length === 0) return null;
 
   const heading = data?.partners_title;

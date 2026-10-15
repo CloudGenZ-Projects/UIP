@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export default function WhatWeDo({ data }) {
   const badge = data?.what_we_do_badge;
   const title = data?.what_we_do_title;
-  const services = data?.services || [];
+  const services = Array.isArray(data?.services) ? data.services : [];
 
   if (!services || services.length === 0) return null;
 

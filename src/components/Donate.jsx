@@ -11,7 +11,7 @@ export default function Donate({ data }) {
   const badge = data.donate_badge;
   const title = data.donate_title;
   const description = data.donate_description;
-  const impactItems = data.donate_impact_items || [];
+  const impactItems = Array.isArray(data?.donate_impact_items) ? data.donate_impact_items : [];
   const ctaLabel = data.donate_cta_label;
   const ctaLink = data.donate_cta_link || '/donate';
 

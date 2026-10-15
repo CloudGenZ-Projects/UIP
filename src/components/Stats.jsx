@@ -8,7 +8,7 @@ const cardStyle = {
 };
 
 export default function Stats({ data }) {
-  const stats = data?.stats || [];
+  const stats = Array.isArray(data?.stats) ? data.stats : [];
   if (!stats || stats.length === 0) return null;
 
   return (

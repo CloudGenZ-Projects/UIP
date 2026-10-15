@@ -10,7 +10,7 @@ export default function About({ data }) {
   const title = data.about_title;
   const description = data.about_description;
   const resolvedImg = getMediaUrl(data.about_image);
-  const features = data.about_features || [];
+  const features = Array.isArray(data?.about_features) ? data.about_features : [];
   const ctaLabel = data.about_cta_label;
   const ctaLink = data.about_cta_link;
 
