@@ -1,14 +1,30 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function Hero() {
-  const youtubeVideoId = "RHaZ3dy1rc0"; 
+export default function Hero({ data }) {
+  if (!data) return null;
+
+  // Video is local in the frontend (no video in CMS)
+  const youtubeVideoId = "RHaZ3dy1rc0";
   const thumbnailUrl = `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
+
+  // Text content from CMS
+  const badge = data.hero_badge;
+  const titleLine1 = data.hero_title_line_1;
+  const titleGradient = data.hero_title_gradient;
+  const description = data.hero_description;
+
+  const cta1Label = data.hero_cta_primary_label;
+  const cta1Link = data.hero_cta_primary_link;
+  const cta2Label = data.hero_cta_secondary_label;
+  const cta2Link = data.hero_cta_secondary_link;
+  const cta3Label = data.hero_cta_tertiary_label;
+  const cta3Link = data.hero_cta_tertiary_link;
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[120px] pb-[160px] px-6">
       
-      {/* Background Video */}
+      {/* Background YouTube Video */}
       <div 
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-cover bg-center"
         style={{ backgroundImage: `url(${thumbnailUrl})` }}
@@ -30,35 +46,43 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 text-center max-w-[800px]">
         
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.6 }}
-          className="inline-block py-2 px-5 bg-white/12 border border-white/20 rounded-full text-white/90 text-sm font-semibold backdrop-blur-md mb-6 shadow-lg"
-        >
-          Ottawa's LGBTQ+ Community Centre
-        </motion.p>
+        {badge && (
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6 }}
+            className="inline-block py-2 px-5 bg-white/12 border border-white/20 rounded-full text-white/90 text-sm font-semibold backdrop-blur-md mb-6 shadow-lg"
+          >
+            {badge}
+          </motion.p>
+        )}
         
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-white text-3xl md:text-[3.2rem] font-extrabold leading-[1.2] mb-5 drop-shadow-2xl"
-        >
-          Find community. Build belonging.<br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]">
-            Start your journey with people who understand you.
-          </span>
-        </motion.h1>
+        {(titleLine1 || titleGradient) && (
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-white text-3xl md:text-[3.2rem] font-extrabold leading-[1.2] mb-5 drop-shadow-2xl"
+          >
+            {titleLine1 && <>{titleLine1}<br /></>}
+            {titleGradient && (
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]">
+                {titleGradient}
+              </span>
+            )}
+          </motion.h1>
+        )}
         
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-white/95 text-lg md:text-[1.2rem] leading-[1.9] max-w-[650px] mx-auto mb-9 font-medium drop-shadow-md"
-        >
-          We support LGBTQ+ newcomers, immigrants, and refugees through community programs, peer support, and culturally affirming spaces.
-        </motion.p>
+        {description && (
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-white/95 text-lg md:text-[1.2rem] leading-[1.9] max-w-[650px] mx-auto mb-9 font-medium drop-shadow-md"
+          >
+            {description}
+          </motion.p>
+        )}
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
@@ -66,15 +90,21 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-wrap gap-4 justify-center"
         >
-          <a href="/contact" className="px-8 py-3.5 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6] text-white rounded-full font-bold shadow-xl hover:scale-105 transition-transform duration-300">
-            Get Support
-          </a>
-          <a href="/programs" className="px-8 py-3.5 bg-white/15 border-2 border-white/50 backdrop-blur-md text-white rounded-full font-bold hover:bg-white/25 transition-all duration-300">
-            Join Our Programs
-          </a>
-          <a href="/Waystogive" className="px-8 py-3.5 bg-white/15 border-2 border-white/50 backdrop-blur-md text-white rounded-full font-bold hover:bg-white/25 transition-all duration-300">
-            Get Involved
-          </a>
+          {cta1Label && (
+            <a href={cta1Link || '#'} className="px-8 py-3.5 bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6] text-white rounded-full font-bold shadow-xl hover:scale-105 transition-transform duration-300">
+              {cta1Label}
+            </a>
+          )}
+          {cta2Label && (
+            <a href={cta2Link || '#'} className="px-8 py-3.5 bg-white/15 border-2 border-white/50 backdrop-blur-md text-white rounded-full font-bold hover:bg-white/25 transition-all duration-300">
+              {cta2Label}
+            </a>
+          )}
+          {cta3Label && (
+            <a href={cta3Link || '#'} className="px-8 py-3.5 bg-white/15 border-2 border-white/50 backdrop-blur-md text-white rounded-full font-bold hover:bg-white/25 transition-all duration-300">
+              {cta3Label}
+            </a>
+          )}
         </motion.div>
 
       </div>

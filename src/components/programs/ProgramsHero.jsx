@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import CommunityGallery from '../CommunityGallery'; // Adjust path as needed
+import CommunityGallery from '../CommunityGallery';
 
-export default function ProgramsHero() {
+export default function ProgramsHero({ data }) {
+  if (!data) return null;
+
   return (
-    // Changed to flex-col so items stack vertically
     <section className="relative min-h-[75vh] flex flex-col items-center justify-center overflow-hidden pt-[120px] pb-[160px]">
       
       {/* Background Gradient */}
@@ -14,13 +15,15 @@ export default function ProgramsHero() {
       
       {/* Top Text Section (Constrained Width) */}
       <div className="relative z-10 text-center max-w-[1000px] px-6 flex flex-col items-center w-full">
-        <motion.span 
-          initial={{ opacity: 0, y: 20 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          className="inline-block py-2 px-5 bg-white/12 border border-white/20 rounded-full text-white/90 text-sm font-medium backdrop-blur-md mb-6"
-        >
-          Community Support & Wellness
-        </motion.span>
+        {data.heroBadge && (
+          <motion.span 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            className="inline-block py-2 px-5 bg-white/12 border border-white/20 rounded-full text-white/90 text-sm font-medium backdrop-blur-md mb-6"
+          >
+            {data.heroBadge}
+          </motion.span>
+        )}
         
         <motion.h1 
           initial={{ opacity: 0, y: 20 }} 
@@ -28,15 +31,19 @@ export default function ProgramsHero() {
           transition={{ delay: 0.1 }}
           className="text-white text-5xl md:text-[4.5rem] font-extrabold leading-[1.1] mb-10"
         >
-          Heal, Empower, and <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]">Connect</span>
+          {data.heroTitleLine1} <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B6B] via-[#A855F7] to-[#3B82F6]">
+            {data.heroTitleGradient}
+          </span>
         </motion.h1>
       </div>
 
       {/* FULL WIDTH GALLERY SECTION */}
-      <div className="relative z-10 w-full mb-10">
-        <CommunityGallery />
-      </div>
+      {data?.galleryImages && data.galleryImages.length > 0 && (
+        <div className="relative z-10 w-full mb-10">
+          <CommunityGallery images={data.galleryImages} />
+        </div>
+      )}
 
       {/* Floating Box (Constrained Width) */}
       <div className="relative z-10 px-6 w-full max-w-[1000px]">
@@ -46,12 +53,16 @@ export default function ProgramsHero() {
           transition={{ delay: 0.2 }}
           className="bg-white/10 backdrop-blur-md rounded-[2.5rem] p-8 md:p-10 border border-white/20 w-full mx-auto text-center md:text-left shadow-2xl"
         >
-          <h3 className="text-xl md:text-2xl font-black mb-4 text-white italic">
-            Grounded in Lived Experience & Cultural Affirmation
-          </h3>
-          <p className="text-white/80 text-base md:text-lg leading-relaxed">
-            At United in Pride, we offer a range of programs and services designed to meet the unique needs of LGBTQ+ newcomers, immigrants, and refugees. Our initiatives focus on healing, connection, empowerment, and advocacy.
-          </p>
+          {data.heroCardTitle && (
+            <h3 className="text-xl md:text-2xl font-black mb-4 text-white italic">
+              {data.heroCardTitle}
+            </h3>
+          )}
+          {data.heroCardDesc && (
+            <p className="text-white/80 text-base md:text-lg leading-relaxed">
+              {data.heroCardDesc}
+            </p>
+          )}
         </motion.div>
       </div>
 

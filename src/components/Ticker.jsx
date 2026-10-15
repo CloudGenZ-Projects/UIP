@@ -1,10 +1,11 @@
 import React from 'react';
 
-const Ticker = () => {
-  const items = [
-    "🎥 Queer Movie Night — Every Last Saturday of the Month, Starting April 25",
-    "🏕️ Upcoming Camp — July 17"
-  ];
+const Ticker = ({ data }) => {
+  const items = data?.ticker_items
+    ? data.ticker_items.map((item) => (typeof item === 'object' ? item.text : item)).filter(Boolean)
+    : [];
+
+  if (!items || items.length === 0) return null;
 
   const content = items.map((item, i) => (
     <span key={i} className="text-white font-semibold text-lg mx-10 shrink-0">{item}</span>
@@ -21,4 +22,5 @@ const Ticker = () => {
     </section>
   );
 };
+
 export default Ticker;

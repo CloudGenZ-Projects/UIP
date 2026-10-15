@@ -1,39 +1,16 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
+import { getMediaUrl } from '../services/api';
 
-import img1 from '../assets/gallerySlid/DSC00239.jpg';
-import img2 from '../assets/gallerySlid/DSC00253.jpg';
-import img3 from '../assets/gallerySlid/DSC00254.jpg';
-import img4 from '../assets/gallerySlid/DSC00270.jpg';
-import img5 from '../assets/gallerySlid/DSC00271.jpg';
-import img6 from '../assets/gallerySlid/DSC00282.jpg';
-import img7 from '../assets/gallerySlid/DSC00283.jpg';
-import img8 from '../assets/gallerySlid/DSC00293.jpg';
-import img9 from '../assets/gallerySlid/DSC00294.jpg';
-import img10 from '../assets/gallerySlid/DSC00303.jpg';
-import img11 from '../assets/gallerySlid/DSC00304.jpg';
-import img12 from '../assets/gallerySlid/_DSC00001.jpg';
-import img13 from '../assets/gallerySlid/_DSC00002.jpg';
-import img14 from '../assets/gallerySlid/_DSC00003.jpg';
-import img15 from '../assets/gallerySlid/_DSC00005.jpg';
-import img16 from '../assets/gallerySlid/_DSC00289.jpg';
-import img17 from '../assets/gallerySlid/DSC00001.jpg';
-import img18 from '../assets/gallerySlid/DSC00157.jpg';
-import img19 from '../assets/gallerySlid/DSC00158.jpg';
-import img20 from '../assets/gallerySlid/DSC00160.jpg';
-import img21 from '../assets/gallerySlid/DSC00161.jpg';
-import img22 from '../assets/gallerySlid/DSC00238.jpg';
-
-const GALLERY_IMAGES = [
-  img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, 
-  img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, 
-  img21, img22
-];
-
-
-
-export default function CommunityGallery() {
+export default function CommunityGallery({ images }) {
   const scrollRef = useRef(null);
+
+  // Purely CMS data - NO local image fallbacks
+  const activeGalleryImages = images && images.length > 0
+    ? images.map((item) => getMediaUrl(item?.image || item)).filter(Boolean)
+    : [];
+
+  if (!activeGalleryImages || activeGalleryImages.length === 0) return null;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -46,9 +23,7 @@ export default function CommunityGallery() {
   };
 
   return (
-    // Removed bg-[#f8fafc] and reduced padding so it fits in the Hero
     <div className="py-8 w-full overflow-hidden relative">
-      
       <style>{`
         .hide-scroll {
           -ms-overflow-style: none;
@@ -60,7 +35,6 @@ export default function CommunityGallery() {
       `}</style>
 
       <div className="relative w-full group">
-        
         {/* Floating Left Button */}
         <button 
           onClick={() => scroll('left')}
@@ -87,10 +61,9 @@ export default function CommunityGallery() {
         <div 
           ref={scrollRef}
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scroll pb-12 pt-4 pr-12 scroll-smooth"
-          // This keeps the first image aligned nicely with standard max-width, while letting the track extend off-screen
           style={{ paddingLeft: 'max(1.5rem, calc((100vw - 1000px) / 2))' }}
         >
-          {GALLERY_IMAGES.map((src, i) => (
+          {activeGalleryImages.map((src, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.95 }}

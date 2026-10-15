@@ -3,24 +3,21 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Donate from '../components/volunteer/Donate'; 
 import VolunteerHero from '../components/volunteer/VolunteerHero';
-import VolunteerCTA from '../components/volunteer/VolunteerCTA';
+import { useUipDonatePageLive } from '../hooks/usePayloadLive';
 
 export default function DonatePage() {
-    return (
-        <div className="min-h-screen bg-white font-sans text-[#3A3556]">
-            <Navbar />
+  const { data } = useUipDonatePageLive();
 
-            <main id="donate" className="relative">
-                <VolunteerHero />
+  return (
+    <div className="min-h-screen bg-white font-sans text-[#3A3556]">
+      <Navbar />
 
-                 <Donate />
-               
-                {/* <VolunteerCTA /> */}
+      <main id="donate" className="relative">
+        <VolunteerHero data={data} />
+        <Donate data={data} />
+      </main>
 
-               
-            </main>
-
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 }
